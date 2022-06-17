@@ -1,0 +1,582 @@
+[gd_scene load_steps=21 format=2]
+
+[ext_resource path="res://CardSlot.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Probably Ancient Evil (Lena Raine).mp3" type="AudioStream" id=2]
+[ext_resource path="res://RhythmManager.gd" type="Script" id=3]
+[ext_resource path="res://CombatScreen.gd" type="Script" id=4]
+[ext_resource path="res://HiHat.mp3" type="AudioStream" id=5]
+[ext_resource path="res://BassDrum.mp3" type="AudioStream" id=6]
+[ext_resource path="res://Damage.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Block.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Boost.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Intro.gd" type="Script" id=10]
+[ext_resource path="res://Pauser.gd" type="Script" id=11]
+
+[sub_resource type="Environment" id=9]
+background_mode = 1
+background_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="World" id=10]
+environment = SubResource( 9 )
+
+[sub_resource type="Animation" id=8]
+resource_name = "bg_bigflash"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/path = NodePath("bg:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.121569, 0.027451, 0.121569, 1 ), Color( 0.0235294, 0.0196078, 0.0235294, 1 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "bg_flash"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("bg:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0.0470588, 0.0352941, 0.0470588, 1 ), Color( 0.0235294, 0.0196078, 0.0235294, 1 ) ]
+}
+
+[sub_resource type="Gradient" id=3]
+colors = PoolColorArray( 0.710938, 0, 0.399902, 1, 1, 0.519531, 0.891144, 1 )
+
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
+
+[sub_resource type="Gradient" id=5]
+colors = PoolColorArray( 0.789062, 0, 0, 1, 1, 0.0976562, 0.0976562, 1 )
+
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
+width = 100
+
+[sub_resource type="Animation" id=11]
+resource_name = "turn_transition"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("NextHand:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CurrentHand:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 0.170755, 1 ),
+"update": 0,
+"values": [ Vector2( 464, 208 ), Vector2( 320, 248 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("CurrentHand:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 0.17, 1 ),
+"update": 0,
+"values": [ Vector2( 0.25, 0.25 ), Vector2( 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("PreviousHand:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 320, 248 ), Vector2( -256, 328 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("PreviousHand:scale")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 4, 4 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("PreviousHand:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("NextDamageDisplay:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("DamageDisplay:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 0.170755, 1 ),
+"update": 0,
+"values": [ Vector2( 424, 208 ), Vector2( 216, 248 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("DamageDisplay:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.25, 0.25 ), Vector2( 1, 1 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("PreviousDamageDisplay:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 2.46229, 1 ),
+"update": 0,
+"values": [ Vector2( 216, 248 ), Vector2( 728, 248 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("PreviousDamageDisplay:modulate")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 4.92457 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[node name="CombatScreen" type="Node2D"]
+script = ExtResource( 4 )
+input_buffer = 0.15
+UI_damage = ExtResource( 7 )
+UI_block = ExtResource( 8 )
+UI_boost = ExtResource( 9 )
+bpm = 100
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.6
+
+[node name="DelayTimer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
+[node name="bg" type="ColorRect" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0.0470588, 0.0352941, 0.0470588, 1 )
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 1024, 600 )
+own_world = true
+world = SubResource( 10 )
+handle_input_locally = false
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 2 )
+volume_db = -8.739
+
+[node name="Deck" type="Node2D" parent="."]
+
+[node name="RhythmManager" type="Node2D" parent="."]
+position = Vector2( 72, 80 )
+script = ExtResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="RhythmManager"]
+root_node = NodePath("../..")
+anims/bg_bigflash = SubResource( 8 )
+anims/bg_flash = SubResource( 7 )
+
+[node name="hihat" type="AudioStreamPlayer" parent="RhythmManager"]
+stream = ExtResource( 5 )
+
+[node name="drum" type="AudioStreamPlayer" parent="RhythmManager"]
+stream = ExtResource( 6 )
+
+[node name="ColorRect" type="ColorRect" parent="RhythmManager"]
+margin_left = 8.0
+margin_top = 24.0
+margin_right = 27.0
+margin_bottom = 64.0
+rect_pivot_offset = Vector2( 19, 30 )
+
+[node name="ColorRect2" type="ColorRect" parent="RhythmManager"]
+margin_left = 32.0
+margin_top = 24.0
+margin_right = 51.0
+margin_bottom = 64.0
+rect_pivot_offset = Vector2( 19, 30 )
+
+[node name="ColorRect3" type="ColorRect" parent="RhythmManager"]
+margin_left = 56.0
+margin_top = 24.0
+margin_right = 75.0
+margin_bottom = 64.0
+rect_pivot_offset = Vector2( 19, 30 )
+
+[node name="ColorRect4" type="ColorRect" parent="RhythmManager"]
+margin_left = 80.0
+margin_right = 101.0
+margin_bottom = 64.0
+rect_pivot_offset = Vector2( 19, 30 )
+
+[node name="EnemyHP" type="TextureProgress" parent="."]
+margin_left = 64.0
+margin_top = 24.0
+margin_right = 960.0
+margin_bottom = 48.0
+max_value = 200.0
+value = 200.0
+rounded = true
+allow_lesser = true
+texture_progress = SubResource( 4 )
+nine_patch_stretch = true
+
+[node name="PlayerHP" type="TextureProgress" parent="."]
+margin_left = 968.0
+margin_top = 576.0
+margin_right = 1189.0
+margin_bottom = 616.0
+rect_rotation = -90.0
+max_value = 10.0
+value = 10.0
+allow_lesser = true
+texture_progress = SubResource( 6 )
+nine_patch_stretch = true
+
+[node name="BoostDisplay" type="Node2D" parent="."]
+position = Vector2( 592, 368 )
+
+[node name="BlockDisplay" type="Node2D" parent="."]
+position = Vector2( 728, 248 )
+
+[node name="NextDamageDisplay" type="Node2D" parent="."]
+position = Vector2( 424, 208 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="DamageDisplay" type="Node2D" parent="."]
+position = Vector2( 216, 248 )
+
+[node name="PreviousDamageDisplay" type="Node2D" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 728, 248 )
+
+[node name="NextHand" type="Node2D" parent="."]
+position = Vector2( 464, 200 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="UpSlot" parent="NextHand" instance=ExtResource( 1 )]
+position = Vector2( 128, 64 )
+
+[node name="LeftSlot" parent="NextHand" instance=ExtResource( 1 )]
+position = Vector2( -8, 136 )
+
+[node name="RightSlot" parent="NextHand" instance=ExtResource( 1 )]
+position = Vector2( 264, 136 )
+
+[node name="DownSlot" parent="NextHand" instance=ExtResource( 1 )]
+position = Vector2( 128, 208 )
+
+[node name="CurrentHand" type="Node2D" parent="."]
+position = Vector2( 320, 248 )
+
+[node name="UpSlot" parent="CurrentHand" instance=ExtResource( 1 )]
+position = Vector2( 128, 64 )
+
+[node name="LeftSlot" parent="CurrentHand" instance=ExtResource( 1 )]
+position = Vector2( -8, 136 )
+
+[node name="RightSlot" parent="CurrentHand" instance=ExtResource( 1 )]
+position = Vector2( 264, 136 )
+
+[node name="DownSlot" parent="CurrentHand" instance=ExtResource( 1 )]
+position = Vector2( 128, 208 )
+
+[node name="PreviousHand" type="Node2D" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( -256, 328 )
+scale = Vector2( 4, 4 )
+
+[node name="UpSlot" parent="PreviousHand" instance=ExtResource( 1 )]
+position = Vector2( 128, 68 )
+
+[node name="LeftSlot" parent="PreviousHand" instance=ExtResource( 1 )]
+position = Vector2( -8, 136 )
+
+[node name="RightSlot" parent="PreviousHand" instance=ExtResource( 1 )]
+position = Vector2( 264, 136 )
+
+[node name="DownSlot" parent="PreviousHand" instance=ExtResource( 1 )]
+position = Vector2( 128, 208 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/turn_transition = SubResource( 11 )
+
+[node name="Intro" type="Control" parent="."]
+visible = false
+script = ExtResource( 10 )
+
+[node name="ColorRect" type="ColorRect" parent="Intro"]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0.509804, 0.509804, 0.509804, 1 )
+
+[node name="ColorRect2" type="ColorRect" parent="Intro"]
+margin_top = 240.0
+margin_right = 1024.0
+margin_bottom = 352.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Intro"]
+margin_left = 283.0
+margin_top = 11.0
+margin_right = 395.0
+margin_bottom = 47.0
+rect_scale = Vector2( 4, 4 )
+bbcode_enabled = true
+bbcode_text = "[center][color=black][b]FLOW STATE
+(pre-alpha)"
+text = "FLOW STATE
+(pre-alpha)"
+scroll_active = false
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Intro"]
+margin_left = 284.0
+margin_top = 147.0
+margin_right = 732.0
+margin_bottom = 217.0
+bbcode_enabled = true
+bbcode_text = "[color=black]This is a turn-based, rhythm-based card game! (don't worry about the \"card\" part yet, haha) Each turn consists of 4 beats; you can use the arrow keys to play one card on each beat in time with the music. The 4 different cards you'll see are:"
+text = "This is a turn-based, rhythm-based card game! (don't worry about the \"card\" part yet, haha) Each turn consists of 4 beats; you can use the arrow keys to play one card on each beat in time with the music. The 4 different cards you'll see are:"
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="Intro"]
+margin_left = 749.0
+margin_top = 357.0
+margin_right = 809.0
+margin_bottom = 380.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]Nothing."
+text = "Nothing."
+scroll_active = false
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="Intro"]
+margin_left = 525.0
+margin_top = 357.0
+margin_right = 660.0
+margin_bottom = 403.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]Double the effect of the next card you play. (this can stack)"
+text = "Double the effect of the next card you play. (this can stack)"
+scroll_active = false
+
+[node name="RichTextLabel5" type="RichTextLabel" parent="Intro"]
+margin_left = 347.0
+margin_top = 359.0
+margin_right = 434.0
+margin_bottom = 391.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]Gain 1 block this turn."
+text = "Gain 1 block this turn."
+scroll_active = false
+
+[node name="RichTextLabel6" type="RichTextLabel" parent="Intro"]
+margin_left = 760.0
+margin_top = 220.0
+margin_right = 791.0
+margin_bottom = 236.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]REST"
+text = "REST"
+scroll_active = false
+
+[node name="RichTextLabel7" type="RichTextLabel" parent="Intro"]
+margin_left = 172.0
+margin_top = 359.0
+margin_right = 270.0
+margin_bottom = 393.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]Deal damage to the enemy."
+text = "Deal damage to the enemy."
+scroll_active = false
+
+[node name="RichTextLabel8" type="RichTextLabel" parent="Intro"]
+margin_left = 558.0
+margin_top = 218.0
+margin_right = 617.0
+margin_bottom = 234.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]PREPARE"
+text = "PREPARE"
+scroll_active = false
+
+[node name="RichTextLabel9" type="RichTextLabel" parent="Intro"]
+margin_left = 364.0
+margin_top = 218.0
+margin_right = 417.0
+margin_bottom = 234.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]DEFEND"
+text = "DEFEND"
+scroll_active = false
+
+[node name="RichTextLabel10" type="RichTextLabel" parent="Intro"]
+margin_left = 192.0
+margin_top = 219.0
+margin_right = 232.0
+margin_bottom = 238.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]CLEAR"
+text = "CLEAR"
+scroll_active = false
+
+[node name="Shape" type="Polygon2D" parent="Intro"]
+position = Vector2( 152, 359 )
+color = Color( 0.937255, 0.356863, 0.278431, 1 )
+polygon = PoolVector2Array( 112, -48, 32, -112, 80, -56, 16, -16 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Intro"]
+position = Vector2( 184, 295 )
+color = Color( 0.937255, 0.356863, 0.278431, 1 )
+polygon = PoolVector2Array( -8, -48, 32, 8, -8, 32, 16, 8 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="Intro"]
+position = Vector2( 208, 295 )
+color = Color( 0.937255, 0.356863, 0.278431, 1 )
+polygon = PoolVector2Array( -32, -16, -16, 8, -32, 16, -24, 8 )
+
+[node name="Shape2" type="Polygon2D" parent="Intro"]
+position = Vector2( 392, 295 )
+color = Color( 0.603922, 0.658824, 1, 1 )
+polygon = PoolVector2Array( -40, -32, 0, -48, 40, -32, 32, 16, 0, 48, -32, 16 )
+
+[node name="Shape3" type="Polygon2D" parent="Intro"]
+position = Vector2( 592, 295 )
+color = Color( 0.298039, 0.937255, 0.380392, 1 )
+polygon = PoolVector2Array( -48, -16, -48, 16, 0, 16, -8, 40, 48, 0, -8, -40, 0, -16 )
+
+[node name="Shape4" type="Polygon2D" parent="Intro"]
+position = Vector2( 776, 295 )
+color = Color( 0.305882, 0.305882, 0.305882, 1 )
+polygon = PoolVector2Array( -24, -40, 40, -40, -8, 24, 40, 24, 24, 40, -40, 40, 8, -24, -40, -24 )
+
+[node name="RichTextLabel11" type="RichTextLabel" parent="Intro"]
+margin_left = 220.0
+margin_top = 414.0
+margin_right = 806.0
+margin_bottom = 479.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]Each turn, you are being attacked for a random amount of damage (the red diamonds on the left). You have to gain enough block each turn to protect yourself from damage, while also dealing damage. Make sure to manage your multipliers and the order in which you play cards, while keeping to the beat! Good luck! Some final tips:"
+text = "Each turn, you are being attacked for a random amount of damage (the red diamonds on the left). You have to gain enough block each turn to protect yourself from damage, while also dealing damage. Make sure to manage your multipliers and the order in which you play cards, while keeping to the beat! Good luck! Some final tips:"
+
+[node name="RichTextLabel12" type="RichTextLabel" parent="Intro"]
+margin_left = 100.0
+margin_top = 492.0
+margin_right = 275.0
+margin_bottom = 541.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]-The white bars in the top left can help you keep track of the beats in a turn."
+text = "-The white bars in the top left can help you keep track of the beats in a turn."
+scroll_active = false
+
+[node name="RichTextLabel13" type="RichTextLabel" parent="Intro"]
+margin_left = 328.0
+margin_top = 491.0
+margin_right = 472.0
+margin_bottom = 538.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]-A card played on the 4th beat in a turn is doubled in effect!"
+text = "-A card played on the 4th beat in a turn is doubled in effect!"
+scroll_active = false
+
+[node name="RichTextLabel14" type="RichTextLabel" parent="Intro"]
+margin_left = 540.0
+margin_top = 491.0
+margin_right = 962.0
+margin_bottom = 546.0
+bbcode_enabled = true
+bbcode_text = "[color=black][b]-If you skip all 4 beats in a turn, that turn is skipped completely; you won't take damage or go to the next hand. Take as much time as you want between turns to plan!!"
+text = "-If you skip all 4 beats in a turn, that turn is skipped completely; you won't take damage or go to the next hand. Take as much time as you want between turns to plan!!"
+scroll_active = false
+
+[node name="RichTextLabel15" type="RichTextLabel" parent="Intro"]
+margin_left = 334.0
+margin_top = 557.0
+margin_right = 501.0
+margin_bottom = 575.0
+rect_scale = Vector2( 2, 2 )
+bbcode_enabled = true
+bbcode_text = "[color=black][b][PRESS ANY KEY TO START]"
+text = "[PRESS ANY KEY TO START]"
+scroll_active = false
+
+[node name="Pauser" type="Control" parent="."]
+pause_mode = 2
+margin_left = 448.0
+margin_top = 64.0
+margin_right = 576.0
+margin_bottom = 128.0
+script = ExtResource( 11 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Pauser"]
+visible = false
+margin_left = 32.0
+margin_top = 16.0
+margin_right = 96.0
+margin_bottom = 48.0
+text = "[PAUSED]"
+
+[connection signal="timeout" from="Timer" to="RhythmManager" method="beat"]

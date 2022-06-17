@@ -1,0 +1,7 @@
+[gd_scene format=2]
+
+[node name="Boost" type="Node2D"]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color( 0.298039, 0.937255, 0.380392, 1 )
+polygon = PoolVector2Array( 8, 24, 8, 40, 32, 40, 24, 56, 56, 32, 24, 8, 32, 24 )
