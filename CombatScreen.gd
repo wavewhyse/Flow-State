@@ -6,6 +6,7 @@ export(PackedScene) var UI_block
 export(PackedScene) var UI_boost
 export(int) var bpm
 
+var beat_num
 var multiplier = 1
 var next_multiplier = 1
 var block = 0
@@ -16,15 +17,14 @@ var deck = []
 var discard = []
 
 func _ready():
+	set_process(false)
 	$Timer.wait_time = 60.0 / bpm
 	randomize()
 	add_user_signal("newturn")
 	$Intro.visible = true
 	yield($Intro, "any_key")
-	$Music.play()
+	$MusicDelay.start()
 	$DelayTimer.start()
-	yield($DelayTimer, "timeout")
-	$Timer.start()
 	$CurrentHand/UpSlot.set_direction("ui_up")
 	$CurrentHand/LeftSlot.set_direction("ui_left")
 	$CurrentHand/RightSlot.set_direction("ui_right")
@@ -47,6 +47,14 @@ func _ready():
 		new_dmg.position.y = i * 64
 	new_turn()
 	discard.clear()
+	yield($DelayTimer,"timeout")
+	set_process(true)
+
+func start_timer():
+	$Timer.start()
+
+func start_music():
+	$Music.play()
 
 func _process(delta):
 	if (check_input() and action_direction == null):
@@ -67,6 +75,10 @@ func _process(delta):
 		if($RhythmManager.beat_num == 2):
 			emit_signal("newturn")
 
+func is_final_beat():
+	return (($Timer.time_left < input_buffer                   and $RhythmManager.beat_num == 1)
+		or ($Timer.time_left > $Timer.wait_time - input_buffer and $RhythmManager.beat_num == 2))
+
 func activate_slot(slot):
 	if not active_turn:
 		for d in $DamageDisplay.get_children():
@@ -74,8 +86,7 @@ func activate_slot(slot):
 	active_turn = true
 	while (multiplier > 0):
 		slot.activate()
-		if (($Timer.time_left < input_buffer                   and $RhythmManager.beat_num == 1)
-		or ($Timer.time_left > $Timer.wait_time - input_buffer and $RhythmManager.beat_num == 2)):
+		if is_final_beat():
 			slot.activate()
 		multiplier -= 1
 	multiplier = 1
@@ -98,9 +109,21 @@ func check_beat_reset(delta):
 	return $Timer.time_left < $Timer.wait_time - input_buffer and $Timer.time_left > $Timer.wait_time - input_buffer - delta
 
 func deal_damage(dmg):
+	$hitsound.stop()
+	if is_final_beat():
+		$bighitsound.play()
+	else:
+		$hitsound.play()
 	$EnemyHP.value -= dmg
+	
+	#$perlin.modulate.a = 1.0 * $EnemyHP.value / $EnemyHP.max_value
 
 func add_block(blk):
+	$blocksound.stop()
+	if is_final_beat():
+		$bigblocksound.play()
+	else:
+		$blocksound.play()
 	for _i in range(1, blk):
 		var new_block = UI_block.instance()
 		$BlockDisplay.add_child(new_block)
@@ -109,7 +132,16 @@ func add_block(blk):
 		block += 1
 
 func gain_status():
+	$boostsound.stop()
+	if is_final_beat():
+		$bigboostsound.play()
+	else:
+		$boostsound.play()
 	next_multiplier += 1
+
+func rest():
+	$restsound.stop()
+	$restsound.play()
 
 func end_turn():
 	yield(self, "newturn")
@@ -117,20 +149,6 @@ func end_turn():
 		new_turn()
 
 func new_turn():
-	
-	print("Deck: ", deck)
-	print("Discard: ", discard)
-	print("Previous Hand:")
-	for c in $PreviousHand.get_children():
-		print(c.held_card)
-	print("Current Hand:")
-	for c in $CurrentHand.get_children():
-		print(c.held_card)
-	print("Next Hand:")
-	for c in $NextHand.get_children():
-		print(c.held_card)
-	print()
-	
 	for c in $CurrentHand.get_children():
 		discard.append(c.held_card)
 	for i in range(4):
@@ -152,7 +170,9 @@ func new_turn():
 		if (block > 0):
 			block -= 1
 		else:
+			$damagesound.play()
 			$PlayerHP.value -= 1
+	#$Path.modulate.a = 1.0 * $PlayerHP.value / $PlayerHP.max_value
 	for d in $NextDamageDisplay.get_children():
 		$NextDamageDisplay.remove_child(d)
 		$DamageDisplay.add_child(d)
@@ -162,6 +182,7 @@ func new_turn():
 		new_dmg.position.y = i * 64
 		
 	$AnimationPlayer.play("turn_transition")
+	$Viewport/Combat3dPath/AnimationPlayer.play("next turn")
 	
 	for b in $BlockDisplay.get_children():
 		b.queue_free()

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/BotB_22262_the_crawling_darkness.mp3-9fbe8d309ab28929cf9f2df1308e21e5.mp3str"
+
+[deps]
+
+source_file="res://songs/BotB_22262_the_crawling_darkness.mp3"
+dest_files=[ "res://.import/BotB_22262_the_crawling_darkness.mp3-9fbe8d309ab28929cf9f2df1308e21e5.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
